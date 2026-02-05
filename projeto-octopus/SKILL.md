@@ -10,6 +10,8 @@ Detalhar o andamento e entregas realizadas do projeto Octopus
 
 ## Arquitetura
 
+O Octopus segue uma arquitetura de monolitos divididos em camadas, utiliza containerização como forma de entrega dos artefatos.
+
 ### Componentes
 
 O Octopus foi dividido em 3 componentes principais com os seguintes nomes:
@@ -17,6 +19,54 @@ O Octopus foi dividido em 3 componentes principais com os seguintes nomes:
 - Octopus-Worker: é o nome que foi dado ao artefato worker service .NET 8, ele é um projeto único no formato de CLI que permite executar os fluxos de Baseline (versiona objetos existentes no banco de dados) e Incremental (versiona novos objetos de banco de dados criados/alterados e remove objetos deletados).
 - Backend: é uma API em .NET 8 para gerenciamento e consulta de dados, ele fornece endpoints para alterar parametros de configuração do `Octopus-Worker`, gerar relatórios e dashboards.
 - Frontend: é uma aplicação web em Angular com NodeJS 20, ela oferece telas dashboard, relatórios, consulta de auditoria, consulta de objetos pendentes para executar no modo incremental e telas para configuração de servidor/instância e banco de dados.
+
+#### Octopus-Worker
+
+- **Plataforma**: Um único worker service .NET 8 (`OctopusWorker`) executado via Generic Host. Ele seleciona `BaselineModeProfile` ou `IncrementalModeProfile` conforme `--mode`.
+- **Camadas**: `Core.Domain` (entidades/valores), `Core.Application` (Baseline/Delta services, Run DTOs, SharedGitWorkflow, ExecutionLogExporter), `Core.Infrastructure` (SQL, Git, Configuração, Observabilidade).
+- **Monitoramento**: Utiliza OpenTelemetry para observabilidade e Elasticsearch via Serilog para registro de logs.
+- **Segurança**: Os identificadores de secrets são armazenadas em banco de dados ou kubernetes e obtidas via cofre de senha.
+
+
+##### Fluxo de Dependências
+```
+OctopusWorker (Program/Worker/Profiles)
+        │
+        ├── OctopusWorker.Services (CLI args → ExecutionRequest)
+        │
+        ├── Core.Application (BaselineService, DeltaService, Git workflows,
+        │                     ExecutionLogExporter, TrackDdl repositories)
+        │
+        └── Core.Infrastructure (SqlConnectionFactory, GitCommandService,
+                              ConfigurationModule, ObservabilityModule)
+```
+- O worker injeta os serviços via DI. Não há referência direta às camadas inferiores fora do Host.
+- `ExecutionRequest` contém `Mode`, `OutputRoot`, `GitBranch`, `DryRun`, `ObjectsPerCommit`, `BatchSize`, além de listas de servidores/bases.
+- `SchemaObjectDefinition` e `DatabaseEndpoint` vivem em `Core.Domain/Shared` e encapsulam todo dado vindo de `tbDadosConexaoServidor`, `tbDadosBase` e `track_DDL`, impedindo que `Core.Application` fale com `DbDataReader` ou objetos de infraestrutura.
+- `MetadataSqlOptions` mora na infraestrutura (`Octopus:Sql`) e é exposta ao restante da solução via `IMetadataSqlOptionsProvider`. Toda credencial/timeout específico deve ser modelado como perfil dentro desse provider, nunca diretamente pela aplicação.
+- `SharedGitWorkflow` centraliza `git init → remote add/set-url → config core.sparseCheckout true + .git/info/sparse-checkout → fetch --depth=1 origin <branch>:<branch> → checkout FETCH_HEAD → add --sparse . → push --set-upstream origin HEAD:<branch>`. Baseline/Delta apenas definem escopo (`baseline`/`delta`), mensagens e usuários.
+- `ExecutionLogExporter` inclui `GitScope`, `GitBranch`, `GitProject` e metadados de dry-run/output, permitindo reconciliar execuções com pipelines GitLab.
+
+##### Workflow – Modo Baseline
+- `ExecutionRequestFactory` interpreta `--mode` (ou default). Para baseline, resolve `ObjectsPerCommit` a partir da CLI ou `OctopusWorker:Baseline`.
+- `BaselineModeProfile` constrói `BaselineRunRequest` e registra em log `ObjectsPerCommit`, `OutputRoot`, `DryRun` antes de delegar ao `BaselineService`.
+- `BaselineService`:
+  - Usa `BaselineMetadataRepository` para obter servidores/bases (`tbDadosConexaoServidor`, `tbDadosBase`).
+  - Stream de objetos via `SchemaScriptGenerator` → escreve `data/<servidor>/<base>/<schema>/<tipo>/<objeto>.sql`.
+  - Git workflow (opcional quando `ObjectsPerCommit` > 0): delega ao `BaselineGitWorkflow`, que chama `SharedGitWorkflow` para executar `git init`, configurar `origin`, habilitar sparse-checkout (`core.sparseCheckout=true` + `.git/info/sparse-checkout` contendo a branch solicitada), `fetch --depth=1 origin <branch>:<branch>`, `checkout FETCH_HEAD`, `git add --sparse .`, `git commit -m "baseline(<base>): snapshot <timestamp>"` e `git push --set-upstream origin HEAD:<branch>`.
+  - Sempre reinicia `track_DDL` após completar todas as bases.
+- Logs e ExecutionLogExporter classificam a execução como `Mode = Baseline` e publicam `GitScope=baseline`, `GitBranch`, `GitProject` (lista csv quando múltiplos repositórios participam da mesma execução).
+
+##### Workflow – Modo Incremental
+- `ExecutionRequestFactory` valida `--mode=incremental` (ou alias) e exige `BatchSize` > 0 (CLI ou `OctopusWorker:Incremental`).
+- `IncrementalModeProfile` constrói `DeltaRunRequest`, registra `BatchSize`, `OutputRoot`, `DryRun` e chama `DeltaService`.
+- `DeltaService`:
+  - `TrackDdlRepository` lê `track_DDL` pendentes, respeitando filtros `--servers` e o `BatchSize` informado.
+  - `ChangeDetectionService` agrupa por servidor/base → cria lotes (`ChangeBatch`).
+  - `DeltaScriptService` escreve apenas objetos alterados, mantendo layout idêntico ao baseline.
+  - `DeltaGitWorkflow` reaproveita `SharedGitWorkflow`, portanto segue o mesmo pipeline `init → remote add/set-url → sparse-checkout da branch → fetch --depth=1 → checkout FETCH_HEAD → add --sparse . → commit delta(...) → push HEAD:<branch>`. O certificado CA temporário ainda é injetado por `GitCommandService`.
+  - Após sucesso, marca as entradas de `track_DDL` como processadas.
+- ExecutionLogExporter marca `Mode = Incremental` e inclui metadados `BatchesProcessed`, `DryRun`, `OutputRoot`.
 
 ### Integração
 
@@ -173,3 +223,6 @@ View agrupada sobre `tbAuditoria` que retorna métricas de eventos por data. Est
 | DATABASENAME | VARCHAR(100) Latin1_General_CI_AI | Sim | — | Nome da base de dados onde o evento ocorreu. |
 | WHEREITFROM | VARCHAR(100) Latin1_General_CI_AI | Sim | — | Host / origem da execução que disparou o DDL. |
 | ISNEW | BIT | Sim | DF__track_DDL__isNew__70DDC3D8 → 1 | Flag que marca o registro como pendente de processamento (1  = novo). |
+
+
+## Forma de implantação
