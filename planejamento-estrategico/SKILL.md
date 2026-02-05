@@ -71,7 +71,7 @@ O PETI é um documento estratégico da DITEC que define a visão de TI, seus obj
 
 ### Link do PETI
 
-- `link_peti_2020_2024: ""`  <!-- preencher depois -->
+https://raw.githubusercontent.com/thiagofdso/banpara-skills/refs/heads/main/planejamento-estrategico/peti_2020-2024_revisao2023_v1.4__1_.pdf
 
 ---
 
@@ -122,6 +122,8 @@ O PDTI é um plano tático-operacional que transforma o PETI em um conjunto estr
   Apresenta um fechamento sintético do ciclo de planejamento e execução, reforçando o papel do PDTI, além de um glossário de termos relacionados à gestão e tecnologia da informação.
 
 ### Link do PDTI
+
+https://raw.githubusercontent.com/thiagofdso/banpara-skills/refs/heads/main/planejamento-estrategico/pdti_2020-2025_revisao_2025_-_v1.7_.pdf
 
 ---
 
