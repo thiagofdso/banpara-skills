@@ -28,6 +28,15 @@ Fornecer contexto estruturado sobre o Banpará (história, missão, visão, atua
 ## Visão
 > Consolidar-se como um Banco de varejo indutor de desenvolvimento sustentável, presente em todos os municípios do Pará, promovendo inovação e inteligência financeira para atrair investimentos e gerar os melhores resultados econômicos e sociais.
 
+## Valores
+
+- Compromisso com a satisfação dos clientes e acionistas
+- Lucro com métrica de desempenho operacional;
+- Impacto como métrica de criação de valor público;
+- Inovação com foco nas demandas do mercado e clientes;
+- Transparência, Meritocracia e Responsabilidade socioambiental;
+- Resultados sustentados pela ética e conformidade.
+
 ## Principais linhas de produtos e serviços
 ### Pessoa Física (PF)
 - Contas correntes e poupança.
