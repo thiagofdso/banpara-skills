@@ -1,11 +1,10 @@
-# Skill: Estrutura Organizacional DITEC - Banco da Amazônia (BANPARA)
-
-## Versão
-- **Manual de Organização da Matriz**: Versão 84
-- **Data de Atualização**: Outubro de 2025
-- **Classificação**: Interna - Destinado a Público Interno
-
 ---
+name: organograma-ditec
+description: Estrutura Organizacional DITEC
+version: 1.0.1
+language: pt-BR
+---
+# Estrutura Organizacional DITEC
 
 ## 1. DIRETORIA DE TECNOLOGIA (DITEC)
 
