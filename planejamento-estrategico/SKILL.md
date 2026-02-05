@@ -13,65 +13,99 @@ Fornecer uma visão dos principais documentos de planejamento estratégico de TI
 
 ## Visão geral dos documentos
 
-- **PETI 2020-2024 (revisão 2023)**  
-  Planejamento Estratégico de Tecnologia da Informação da DITEC para o período 2020–2024, atualizado em 2023. Foca em diretrizes estratégicas, objetivos de longo prazo para TI, governança, inovação, modernização de arquitetura e alinhamento com o Planejamento Estratégico corporativo.
+- **PETI 2026-2027 (versão 1.0, dez/2025)**  
+  Planejamento Estratégico de Tecnologia da Informação vigente da DITEC para o biênio 2026–2027, alinhado ao Planejamento Estratégico do Banpará 2025–2029 (PE 2025–2029). Define missão, visão, valores, análise de ambiente (incluindo tendências como IA, nuvem, Open Finance), princípios estratégicos, mapa estratégico e objetivos com indicadores para TI, em horizonte de dois anos.
 
 - **PDTI 2020-2025 (revisão 2025)**  
   Plano Diretor de TI que operacionaliza o PETI no período 2020–2025. Estrutura metas, planos de ação, orçamento, gestão de pessoas e gestão de riscos para viabilizar a execução da estratégia de TI definida no PETI.
 
 ---
 
-## PETI 2020-2024 – Estrutura de alto nível
+## PETI 2026-2027 – Estrutura de alto nível
 
-O PETI é um documento estratégico da DITEC que define a visão de TI, seus objetivos de médio prazo e os pilares de governança e inovação que sustentam a transformação digital do banco.
+O PETI 2026–2027 é o documento estratégico atual da DITEC. Foca em alinhar a TI ao PE 2025–2029, responder a um cenário de forte transformação digital (IA, nuvem, open finance, segurança) e elevar a maturidade de governança, inovação e serviços de TI no biênio.
 
 ### Seções principais
 
-- **Histórico de atualizações**  
-  Registra as revisões do PETI, destacando ajustes de estrutura, matrizes (SWOT, GUT), indicadores e objetivos estratégicos da DITEC.
+- **Dados da publicação e histórico de atualizações**  
+  Identificação do documento (título, unidade responsável – SUGOT, versão, data de referência, classificação interna, público-alvo) e histórico, registrando a criação e publicação do PETI 2026–2027 em dez/2025.
 
 - **Apresentação**  
-  Contextualiza o papel do PETI como desdobramento do Planejamento Estratégico corporativo, explicando que o documento orienta metas, iniciativas e prioridades da TI para o período 2020–2024.
+  Explica o papel do PETI como planejamento estratégico de TI da DITEC, alinhado ao PE 2025–2029, com escopo de dois anos para aumentar agilidade frente a mudanças tecnológicas e regulatórias e manter o alinhamento ao negócio.
 
-- **Listas de Tabelas e Figuras; Acrônimos**  
-  Sumários de apoio para navegação e compreensão das ferramentas de gestão e terminologia de TI utilizadas (SWOT, GUT, ITIL, COBIT, IT BSC etc.).
+- **Acrônimos e abreviaturas**  
+  Lista de siglas usadas no documento (BPM, BSC, COBIT, ITIL, PETI, PDTI, LGPD, etc.), facilitando leitura e entendimento para quem consulta o PETI.
 
 - **1. Referencial Normativo**  
-  Consolida normas, leis, frameworks e documentos internos que orientam governança e gestão de TI (por exemplo: LGPD, Lei 13.303, COBIT, ITIL, políticas internas e normas ISO/IEC).
+  Conjunto de normas, leis, frameworks e documentos internos que fundamentam a governança e a gestão de TI no Banpará, incluindo:  
+  - PE 2025–2029 do Banpará  
+  - Política de Governança de TI  
+  - COBIT 2019, ITIL 4 Edition  
+  - LGPD, Lei 13.303/2016  
+  - Regulamento de Licitações e Contratos  
+  - ISO/IEC 38500 e Manual Organizacional do Banpará.
 
-- **2. Estrutura da DITEC**  
-  Apresenta o organograma da Diretoria de Tecnologia, suas superintendências, gerências e comitês de TI, explicando papéis e responsabilidades de cada unidade.
+- **2. Estrutura da DITEC (organograma e descrição de unidades)**  
+  Apresenta o organograma da DITEC, descrevendo superintendências, gerências e núcleo de segurança, e três comitês sob responsabilidade da Diretoria:  
+  - Comitê de Tecnologia da Informação  
+  - Comitê de Segurança da Informação, Cibernética e de Prevenção e Combate à Fraude  
+  - Comitê de Gestão de Crise em TI.
+
+  Para cada unidade (SUSIS, SUGOT, SUPRO, GEPRO, GECRE, GECAU, GEMPI, GERIN, GEFAB, GEPOQ, GEARQ, GECTI, GERAD, GEMUL, GESER, GEMON, GETEL, GEINS, GCONF, NUSIF), o PETI descreve brevemente responsabilidades, com foco em desenvolvimento de sistemas, governança, produção, monitoramento, infraestrutura, segurança da informação e gestão de contratos.
 
 - **3. Metodologia**  
-  Descreve as abordagens de planejamento estratégico utilizadas (SWOT, GUT, IT BSC) e a forma de desdobramento de objetivos e indicadores da TI a partir dos objetivos corporativos.
+  Detalha o processo de elaboração do PETI 2026–2027:  
+  - Partida no Planejamento Estratégico institucional (PE 2025–2029).  
+  - Análise de ambiente interno e externo (megatendências, regulação, setor bancário).  
+  - Construção de matriz SWOT da DITEC.  
+  - Definição/revisão de Missão, Visão e Valores.  
+  - Elaboração do mapa estratégico (BSC) e desdobramento em metas, indicadores e iniciativas, com priorização.
 
-- **4. Análise de Ambiente (SWOT e GUT)**  
-  Analisa forças, fraquezas, oportunidades e ameaças da TI, além de priorizar fatores com a matriz GUT, oferecendo base para definir os objetivos estratégicos.
+- **4. Análise de Ambiente**  
+  Descreve o contexto de TI em que a DITEC está inserida, incluindo:  
+  - Transformação digital e tendências tecnológicas (IA generativa, blockchain e DREX, open finance, cibersegurança, nuvem híbrida).  
+  - Comportamento dos clientes e digitalização (predominância de canais digitais, especialmente mobile).  
+  - Exigências regulatórias e de segurança.  
+  - Concorrência com bancos digitais, fintechs e big techs.  
+  - Desafios de modernização de infraestrutura, adoção de arquitetura orientada a serviços, nuvem híbrida, práticas ágeis e DevOps.
+
+  Em seguida, apresenta a **matriz SWOT da DITEC**, com síntese de forças, fraquezas, oportunidades e ameaças, detalhando pontos de governança, processos, segurança, fornecedores, pessoas, conhecimento, inventário e infraestrutura.
 
 - **5. Alinhamento Estratégico da TI**  
-  Explica como a TI se conecta aos pilares e ciclos de desenvolvimento do banco, destacando governança e inovação como temas centrais da estratégia.
+  Conecta os objetivos do PE do Banpará (perspectivas Finanças, Mercado/Imagem/Clientes, Gestão/Tecnologia, Pessoas) com impactos esperados na DITEC. Apresenta, em formato de tabela, como cada objetivo do Banco exige ações de TI (digitalização, omnichannel, segurança, governança de dados, laboratório de inovação, capacitação etc.).
 
-- **6. Princípios Estratégicos**  
-  Lista princípios que orientam a atuação da TI (alinhamento ao negócio, foco no cliente, inovação, transparência, segurança, qualidade, governança adaptativa etc.).
+- **6. Princípios Estratégicos da TI**  
+  Lista princípios que orientam as decisões de TI no ciclo 2026–2027, como:  
+  - Alinhamento estratégico com o Banpará  
+  - Foco no cliente e experiência digital  
+  - Segurança e resiliência cibernética  
+  - Inovação contínua e adoção de tecnologias emergentes  
+  - Eficiência operacional e sustentabilidade  
+  - Governança e compliance  
+  - Cultura data-driven.
 
-- **7. Referencial Estratégico de TI (Missão, Visão e Valores)**  
-  Define missão, visão e valores específicos da TI, com ênfase em serviços financeiros digitais, protagonismo em inovação e foco no cliente paraense.
+- **7. Referencial Estratégico da TI (Missão, Visão, Valores)**  
+  Define:  
+  - **Missão**: gerar valor para Banpará, clientes, colaboradores e sociedade, com serviços modernos, resilientes, seguros e inovadores, alinhados ao PE, promovendo inclusão financeira, desenvolvimento sustentável e excelência na experiência do usuário.  
+  - **Visão**: ser referência, até 2029, em confiabilidade, segurança e inovação em serviços de TI, fortalecendo operações e transformação digital do Banpará, alinhada à agenda de inclusão financeira e desenvolvimento sustentável.  
+  - **Valores**: satisfação do usuário, inovação orientada ao negócio e à sociedade, decisões baseadas em dados e conformidade, segurança e ética, capacitação contínua, eficácia operacional e sustentabilidade.
 
 - **8. Mapa Estratégico da TI**  
-  Representação visual dos objetivos da TI em diferentes perspectivas (IT BSC), conectando temas como inovação, modernização tecnológica, gestão de serviços e governança.
+  Apresenta o mapa estratégico da DITEC organizado em quatro perspectivas (Contribuição ao Negócio, Cliente, Processos Internos, Aprendizado e Crescimento), mostrando como objetivos se relacionam com missão, visão e PE 2025–2029.
 
-- **9. Objetivos Estratégicos da DITEC**  
-  Desdobra os principais objetivos estratégicos (por exemplo: fomentar inovação e agilidade, modernizar a arquitetura tecnológica, estruturar o gerenciamento de serviços de TI e a governança de TI), com explicações textuais e conceitos de maturidade.
+- **9. Objetivos Estratégicos da DITEC e Indicadores**  
+  Detalha objetivos estratégicos agrupados por perspectiva, com ações estratégicas e indicadores que serão monitorados no biênio, por exemplo:  
+  - **Contribuição ao Negócio (CN01)**: impactar positivamente os resultados da organização com uso de TI, com indicador de percentual de projetos que atingem benefícios estimados.  
+  - **Cliente (CL01, CL02)**: serviços de alta qualidade no momento certo e modernização de soluções, com indicadores de disponibilidade de serviços críticos e percentual de sistemas críticos modernizados.  
+  - **Processos Internos (PI01–PI05)**: infraestrutura segura e confiável, melhoria contínua de serviços, gestão orçamentária eficaz, relacionamento com partes interessadas, atendimento a requisitos regulatórios (indicadores de monitoramento, MTTR, DR, maturidade COBIT, execução orçamentária, satisfação das áreas, desempenho de fornecedores, aderência regulatória, inconformidades críticas).  
+  - **Aprendizado e Crescimento (AC01, AC02)**: atração e desenvolvimento de pessoal e provisão de métodos/tecnologias/modelos de referência, com indicadores como aderência ao plano de capacitação e número de iniciativas de inovação implementadas.
 
-- **10. Fatores Críticos de Sucesso**  
-  Lista fatores essenciais para que a estratégia de TI tenha sucesso (governança, patrocínio da alta direção, comunicação, alinhamento ao PE, orçamento, recursos humanos e tecnológicos).
-
-- **Glossário e Anexos**  
-  Oferece definições de termos e apresenta o mapa estratégico do Banpará e outros materiais de referência como anexos.
+- **10. Fatores Críticos de Sucesso, Glossário e Anexos**  
+  Lista fatores-chave para sucesso do PETI (governança e patrocínio da alta direção, comunicação, alinhamento ao PE, orçamento adequado, recursos humanos e tecnológicos), seguido de glossário de termos e anexos (como mapa estratégico do Banpará 2025–2029).
 
 ### Link do PETI
 
-https://raw.githubusercontent.com/thiagofdso/banpara-skills/refs/heads/main/planejamento-estrategico/peti_2020-2024_revisao2023_v1.4__1_.pdf
+https://raw.githubusercontent.com/thiagofdso/banpara-skills/refs/heads/main/planejamento-estrategico/PETI_2026-2027_V1.0.pdf
 
 ---
 
