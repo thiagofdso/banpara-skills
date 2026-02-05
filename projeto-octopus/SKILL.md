@@ -44,7 +44,16 @@ Obedecendo ao princípio do privilégio mínimo o usuário de banco de dados (*g
   - grant view any definition
 - **Nas Bases Octopus e OctopusSrvConexao**:
   - db_owner
- 
+
+
+#### Objetos de servidor
+
+##### Trigger
+
+###### trg_track_DDL
+
+https://raw.githubusercontent.com/thiagofdso/banpara-skills/refs/heads/main/projeto-octopus/trg_track_DDL.sql
+
 #### Objetos OctopusSrvConexao
 
 ##### Tabelas
