@@ -14,6 +14,10 @@ Esse projeto visa implementar um sistema que versiona objetos de banco de dados 
 
 O sistema é reativo, ele realiza o baseline dos objetos, gerando todos scripts DDL de criação dos objetos e versionando e de forma incremental através de uma tabela alimentada a partir de uma trigger que detecta todas as alterações de DDL.
 
+### Detalhamento do projeto
+
+https://raw.githubusercontent.com/thiagofdso/banpara-skills/refs/heads/main/projeto-octopus/SKILL.md
+
 ## Automação em mudanças de banco de dados
 
 Esse projeto visa implementar o versionamento e automatização de mudanças de banco de dados.
