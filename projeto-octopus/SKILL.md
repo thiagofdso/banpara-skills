@@ -264,3 +264,7 @@ View agrupada sobre `tbAuditoria` que retorna métricas de eventos por data. Est
 ## Implantação produção
 
 Está pendente a implantação.
+
+### Plano de Implantação
+
+https://raw.githubusercontent.com/thiagofdso/banpara-skills/refs/heads/main/projeto-octopus/plano-implantacao.md
