@@ -27,6 +27,32 @@ O Octopus foi dividido em 3 componentes principais com os seguintes nomes:
 - **Monitoramento**: Utiliza OpenTelemetry para observabilidade e Elasticsearch via Serilog para registro de logs.
 - **Segurança**: Os identificadores de secrets são armazenadas em banco de dados ou kubernetes e obtidas via cofre de senha.
 
+#### Backend
+
+The backend is a Minimal API host whose modules (`Modules/*.cs`) register feature slices (dashboard, servers, databases, audit, triggers, reports, auth). Each module talks to kept `Octopus.Core` application services built on Dapper repositories.
+
+| Layer | Responsibilities | Key Artifacts |
+| --- | --- | --- |
+| **Program Startup** | Builds configuration, wires Serilog, HttpClient factories, OpenID Connect, cookies, authorization policies, problem details, Swagger, and module registration. | `backend/src/Octopus.Api/Program.cs` |
+| **Modules** | Extension methods that map HTTP verbs/resources to handlers. Modules hydrate application services (dashboard, servers, etc.), validate inputs, and shape DTO responses. | `backend/src/Octopus.Api/Modules/*.cs` (e.g., `ServersModule.cs`, `DatabasesModule.cs`, `AuditModule.cs`, `TriggerDdlModule.cs`, `ReportsModule.cs`, `DashboardModule.cs`, `AuthModule.cs`) |
+| **Application Services** | Copied from `backend/src/Core/Application/*`. Provide orchestrations for servers, databases, triggers, audit, dashboard, and reports; rely on repositories and domain models in `Octopus.Core`. | `backend/src/Core/Application/Servers`, `/Databases`, `/Dashboard`, `/Audit`, `/Reports`, `/Triggers`, `/TriggersDdl` |
+| **Domain Models** | Legacy types mirrored from `temp` describing metadata entities (server registrations, database profiles, audit rows). | `backend/src/Core/Domain/**` |
+| **Infrastructure** | Dapper-based repositories, SQL connection factories, Conjur credential loaders, and options providers reused by the new API. | `backend/src/Core/Infrastructure/Data`, `/Options`, `/Security` |
+| **Cross-Cutting** | Serilog sinks, FluentValidation, health checks, Conjur integrations, background jobs (if baseline/delta automation launches). | `backend/src/Octopus.Api/Infrastructure`, `backend/src/Core/Application/Options` |
+
+#### Frontend
+
+The SPA is a standalone Angular 18 app bootstrapped via `src/main.ts`. It fetches runtime config before calling `bootstrapApplication`, enabling per-environment API/Auth endpoints without rebuilds.
+
+| Layer | Responsibilities | Key Artifacts |
+| --- | --- | --- |
+| **Bootstrap & Runtime Config** | Loads `assets/app-config.json` before `bootstrapApplication`, registers zone-coalesced change detection, router, HTTP client with `authInterceptor`, NgRx store/devtools, router-store, and Lucide icons. | `src/main.ts`, `src/app/app.config.ts`, `src/app/core/config/**` |
+| **Shell & Navigation** | `ShellComponent` drives the layout (sidebar, header, theme toggle, auth prompts, system banner) while gating content based on `AuthService` signals. | `src/app/core/layout/shell/**`, `src/app/core/theme/theme.service.ts`, `src/app/core/auth/auth.service.ts` |
+| **Routing & Lazy Features** | `app.routes.ts` lazy-loads each page as a standalone component and scopes its NgRx `provideState`/`provideEffects` providers so feature slices initialize only when the route is activated. | `src/app/app.routes.ts`, `src/app/features/*/pages/**` |
+| **State & Facades (NgRx)** | Every domain registers a reducer, selectors, and functional effects under `features/*/store`. Facade services wrap the NgRx `Store`, expose selectors as Signals with `toSignal`, and provide command methods such as `ServersFacade.saveServer`. | `src/app/features/*/store/**`, `src/app/features/*/services/*-facade.service.ts`, `src/app/store/**` |
+| **Domain API Gateways** | Strongly-typed HTTP services translate table filters to query params, call backend endpoints relative to `AppConfigService.apiBaseUrl()`, and throw domain-specific errors consumed by effects. | `src/app/features/*/services/*-api.service.ts`, `src/app/core/auth/auth.interceptor.ts` |
+| **Cross-Cutting Core** | Runtime config, safe storage, auth flows, and theme synchronization remain centralized. `AppConfigService` merges defaults with runtime payloads, `AuthService` orchestrates login/logout/user info, and `ThemeService` persists theme preference via `SafeStorageService`. | `src/app/core/config/**`, `src/app/core/auth/**`, `src/app/core/services/safe-storage.service.ts`, `src/app/core/theme/**` |
+| **Shared UI & Styling** | Standalone UI primitives (tables, dialogs, banner, versioning toggle) plus Tailwind tokens and CSS variables keep look-and-feel consistent. Icons are tree-shaken via `LucideAngularModule.pick`. | `src/app/shared/**`, `tailwind.config.ts`, `src/styles.css` |
 
 ##### Fluxo de Dependências
 ```
@@ -225,4 +251,16 @@ View agrupada sobre `tbAuditoria` que retorna métricas de eventos por data. Est
 | ISNEW | BIT | Sim | DF__track_DDL__isNew__70DDC3D8 → 1 | Flag que marca o registro como pendente de processamento (1  = novo). |
 
 
-## Forma de implantação
+## Implantação desenvolvimento
+
+- Ambiente: Openshift - `https://api.ocp.desenv.com:6443`
+- Namespace: octopus
+- Resources: `service/backend`, `service/frontend`, `deployment/backend`, `deployment.apps/frontend`, `cronjob/octopus-incremental-cronjob-dev-clust01`, `cronjob/octopus-incremental-cronjob-dev-clust02`, ` cronjob/octopus-incremental-cronjob-dev-clust03`, `cronjob/octopus-incremental-cronjob-dev-clust04`, `cronjob/octopus-incremental-cronjob-dev-clust05`, `cronjob/octopus-incremental-cronjob-dev-clust06`, `job/octopus-baseline-job`, `route/backend`, `route/frontendesenv.com`
+- Servidor de Banco de Dados: DESENV-SRVSQL.desenv.com
+- Instâncias/Porta:  SQLCLUST01/1434, SQLCLUST02/1433, SQLCLUST03/50163, SQLCLUST04/50242, SQLCLUST05/50322, SQLCLUST06/53679
+- URL Cybeark Conjur: https://conjur-follower-cyberark-conjur.apps.ocp.desenv.com
+- URL Cybeark Identity: https://workforce.banpara.b.br/OAuth2/Authorize/octopus
+
+## Implantação produção
+
+Está pendente a implantação.
