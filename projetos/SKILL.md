@@ -8,7 +8,7 @@ language: pt-BR
 ## Objetivo da skill
 Fornecer contexto estruturado sobre os projetos em andamento
 
-## Octopus
+## Projeto 01 Octopus
 
 Esse projeto visa implementar um sistema que versiona objetos de banco de dados do SQL Server através de um servidor Gitlab.
 
@@ -18,7 +18,7 @@ O sistema é reativo, ele realiza o baseline dos objetos, gerando todos scripts 
 
 https://raw.githubusercontent.com/thiagofdso/banpara-skills/refs/heads/main/projeto-octopus/SKILL.md
 
-## Automação em mudanças de banco de dados
+## Projeto 02 Automação em mudanças de banco de dados
 
 Esse projeto visa implementar o versionamento e automatização de mudanças de banco de dados.
 
