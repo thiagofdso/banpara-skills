@@ -291,10 +291,65 @@ https://raw.githubusercontent.com/thiagofdso/banpara-skills/refs/heads/main/proj
 
 ## Fase 2
 
-Na fase dois fizemos uma pesquisa e comparação de ferramentas de mercado para versionar mudançcas de banco de dados no arquivo abaixo.
+Na fase dois fiz uma pesquisa e comparação de ferramentas de mercado para versionar mudançcas de banco de dados no arquivo abaixo.
 
 https://raw.githubusercontent.com/thiagofdso/banpara-skills/refs/heads/main/projeto-implantacao-banco/Analise_de_Ferramentas_de_Implantação_de_Banco_de_dados.pdf
 
 Selecionamos flyway, liquibase e SQL Server Data Tools para realizar provas de conceito e foi criada o relatório abaixo.
 
 https://raw.githubusercontent.com/thiagofdso/banpara-skills/refs/heads/main/projeto-implantacao-banco/PROVA_DE_CONCEITO_FERRAMENTAS_DE_IMPLANTAÇÃO_DE_BANCO_DE_DADOS.pdf
+
+Fiz uma pesquisa em sites de contratos do governopara fazer a	Análise financeira, Análise de custo de licenciamento e Análise de custo de suporte, mas não encontrei nenhum contrato, então vou considerar os preços de mercado leantados no relatório da prova de conceito.
+
+### Em execução
+
+Vou fazer o Go-live (2.5.8) usando o SQL Server Data Tools, para decidir automatizar a criação de projetos de banco de dados com repositório no gitlab e job no jenkins, gerando de forma automática a versão inicial 1.0.0 com a estrutura atual do banco de dados em produção, gravando o artefato no nexus e registrando tag no gitlab. A automação vai ser feita através de um job no jenkins onde o usuário entra com o nome do produto que remete diretamente a um grupo no gitlab onde vai ser criado o repositório e a um organization folder no jenkins com os multibranch pipelines para cada repositório do grupo, o servidor de banco de dados e o nome do banco de dados que vai ser o nome do repositório a ser criado. O job vai 1. usar o sqlpackage para extrair os objetos de banco de dados do servidor 2. criar um projeto dotnet com template Microsoft.Build.Sql.Templates 3. atualizar metadados do arquivo de projeto sqlproj 4. criar o Jenkinsfile para contruir o projeto 5. criar o repositório no gitlab e enviar arquivos 6. executar o scaner no organization folder do jenkins 7. executar primeiro build e gerar a primeira versão do banco de dados. No piloto vai ser decidido junto com a SUSIS/GERIN um banco de dados para rodar esse processo e depois gerar uma versão para implantação, após gerada a primeira versão a ideia é fazer a implantação manual junto com os DBAs e nas próximas automatizar.
+
+Bloco 1: Arquitetura e Fluxo Lógico (Manhã)
+[ ] Mapear parâmetros de entrada e fluxo de automação
+
+Estimativa de tempo: 1h 30 min
+Contexto do Projeto: Definir exatamente como a automação vai receber os inputs (Grupo do GitLab, Cluster, Banco de Dados) e desenhar o diagrama de sequência das chamadas (Extração -> Criação de Arquivos -> API GitLab -> API Jenkins).
+
+
+[ ] Especificar o processo de extração de schema (Engenharia Reversa)
+
+Estimativa de tempo: 1h 30 min
+Contexto do Projeto: Definir quais ferramentas de linha de comando serão usadas (ex: SqlPackage.exe com a ação Extract ou dotnet msbuild) para conectar na base de desenvolvimento e gerar os arquivos .sql e o .sqlproj inicial.
+
+
+Bloco 2: Templates e Integrações (Início da Tarde)
+[ ] Estruturar o template do Projeto .NET e Jenkinsfile
+
+Estimativa de tempo: 2h
+Contexto do Projeto: Criar o esqueleto padrão do arquivo .sqlproj que a automação vai gerar. Em seguida, escrever o template do Jenkinsfile contendo os estágios essenciais: Checkout, Build (geração do artefato .dacpac) e publicação do artefato.
+
+
+[ ] Mapear chamadas de API do GitLab e Jenkins
+
+Estimativa de tempo: 1h 30 min
+Contexto do Projeto: Levantar os endpoints exatos da API do GitLab para criar o repositório no grupo correto e fazer o commit/push inicial dos arquivos gerados. Definir como o Jenkins será acionado para escanear o novo repositório (ex: webhook ou Job DSL/Organization Folder).
+
+
+Bloco 3: Validação e Critérios de Sucesso (Fim da Tarde)
+[ ] Definir roteiro de testes na base de desenvolvimento
+
+Estimativa de tempo: 1h
+Contexto do Projeto: Estabelecer o passo a passo para validar o piloto (ex: rodar a automação, verificar se o repo foi criado corretamente, checar se o Jenkins disparou o build e se o .dacpac foi gerado sem erros de compilação).
+
+
+[ ] Consolidar o Plano do Piloto (Documentação)
+
+Estimativa de tempo: 30 min
+Contexto do Projeto: Juntar todos os artefatos gerados hoje em um documento único ou card/issue para guiar a implementação técnica nos próximos dias.
+
+
+🚧 Possíveis Bloqueios e Mitigações
+Permissões de API e Acesso: Você pode esbarrar na falta de tokens de acesso com privilégios suficientes para criar repositórios via API no GitLab ou configurar jobs no Jenkins.
+
+Mitigação: Logo no primeiro bloco do dia, verifique se você possui um Personal Access Token (PAT) do GitLab com escopo de api e credenciais adequadas no Jenkins. Se não tiver, solicite imediatamente à equipe responsável (SUSIS/Segurança) para não travar a tarde.
+
+
+Limitações do SqlPackage/SSDT via CLI: A extração de bancos legados pode gerar erros de dependências circulares ou objetos não suportados que quebram o build inicial.
+
+Mitigação: Para o piloto, escolha um banco de dados de desenvolvimento pequeno e bem estruturado. Não tente validar a automação com o banco mais complexo do Banpará logo de cara.
